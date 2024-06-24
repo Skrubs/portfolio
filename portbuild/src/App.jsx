@@ -2,6 +2,8 @@
 import './App.css'
 import PrimarySearchAppBar from "./components/PrimarySearchAppBar.jsx";
 import PrimaryNavBar from "./components/NavBar.jsx";
+import Footer from "./components/Footer.jsx";
+
 
 
 
@@ -16,7 +18,10 @@ function App() {
 
             </paper>
         </div>
+
         <PrimaryNavBar/>
+       <Footer/>
+
    </>
   )
 }
