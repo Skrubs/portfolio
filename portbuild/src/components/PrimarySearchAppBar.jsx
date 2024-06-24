@@ -156,7 +156,13 @@ export default function PrimarySearchAppBar() {
 
     return (
         <Box sx={{ flexGrow: 1, }}>
-            <AppBar style={{ justifyContent: 'center', alignItems: 'center', background: 'linear-gradient(to right, darkslateblue, dimgray)', width: '60%', borderRadius: '5%'}} position="static">
+            <AppBar style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            background: 'linear-gradient(to right, darkslateblue, dimgray)',
+                            width: '60%',
+                            borderRadius: '5%'
+                            }} position="static">
                 <Toolbar>
                     <IconButton
                         size="large"
