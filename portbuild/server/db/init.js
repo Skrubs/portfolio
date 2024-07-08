@@ -59,7 +59,7 @@ async function checkForDatabaseUser() {
         host: process.env.DB_HOST,
         database: 'postgres',
         user: 'postgres',
-        password: 'admin',
+        password: '1',
         port: 5432,
     });
 

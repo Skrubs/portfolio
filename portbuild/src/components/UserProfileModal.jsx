@@ -1,7 +1,18 @@
 import { Dialog, DialogContent, Avatar, Button, IconButton, Typography, Box } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
+import Login from '../components-sub/Login';
+import {useState} from "react";
+
+
 
 const UserProfileModal = ({ open, handleClose, user }) => {
+    const [showLogin, setShowLogin] = useState(false);
+
+    const handleClickLogin = ()=>{
+        setShowLogin(true);
+    }
+
+
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="user-profile-modal">
             <DialogContent sx={{ position: 'relative', padding: 4 }}>
@@ -22,20 +33,23 @@ const UserProfileModal = ({ open, handleClose, user }) => {
                     Job Title goes here
                     </Typography>
                 </Box>
-                <Box display="flex" justifyContent="space-between" mt={4}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                    >
-                        Edit Profile
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                    >
-                        Logout
-                    </Button>
-                </Box>
+                {!showLogin &&
+                    <Box display="flex" justifyContent="space-between" mt={4}>
+                        <Button onClick={handleClickLogin}
+                                variant="contained"
+                                color="primary"
+                        >
+                            Login
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                        >
+                            Logout
+                        </Button>
+                    </Box>
+                }
+                {showLogin && <Login x={ 500 } y={ 500 }/>}
             </DialogContent>
         </Dialog>
 

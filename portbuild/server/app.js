@@ -1,70 +1,79 @@
-import createError from 'http-errors'
-import express from 'express'
-import path from 'path'
-import cookieParser from 'cookie-parser'
-import logger from 'morgan'
-import dotenv from 'dotenv'
-import bodyParser from 'body-parser'
-import { fileURLToPath } from 'url'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+import createError from 'http-errors';
+import express from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import { fileURLToPath } from 'url';
+import indexRouter from './routes/index.js';
+import usersRouter from './routes/users.js';
+import userProfileRouter from './routes/userprofile.js';
+import projectsRouter from './routes/projects.js';
+import db from './db/init.js';
 
 dotenv.config();
 
-import indexRouter from './routes/index.js'
-import usersRouter from './routes/users.js'
-import userProfileRouter from './routes/userprofile.js'
-import projectsRouter from './routes/projects.js'
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const port = 3001;
 
-const server = express()
+const server = express();
 
-import db from './db/init.js'
+// View engine setup
+server.set('views', path.join(__dirname, 'views'));
+server.set('view engine', 'jade');
 
-// view engine setup
-server.set('views', path.join(__dirname, 'views'))
-server.set('view engine', 'jade')
+server.use(logger('dev'));
+server.use(express.json());
+server.use(express.urlencoded({ extended: false }));
+server.use(cookieParser());
+server.use(express.static(path.join(__dirname, 'public')));
 
-server.use(logger('dev'))
-server.use(express.json())
-server.use(express.urlencoded({ extended: false }))
-server.use(cookieParser())
-server.use(express.static(path.join(__dirname, 'public')))
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: true }));
 
-server.use(bodyParser.json())
-server.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-)
+// Setup use pages for the backend postgres queries
+server.use('/', indexRouter);
+server.use('/', usersRouter);
+server.use('/', userProfileRouter);
+server.use('/', projectsRouter);
 
-// setup use pages for the backend postgres queries
-server.use('/', indexRouter)
-server.use('/', usersRouter)
-server.use('/', userProfileRouter)
-server.use('/', projectsRouter)
-
-// catch 404 and forward to error handler
+// Catch 404 and forward to error handler
 server.use(function(req, res, next) {
-  next(createError(404))
-})
+  next(createError(404));
+});
 
-// error handler
+// Error handler
 server.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  // Set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.server.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500)
-  res.render('error')
-})
+  // Render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
 
+// Test API endpoint
+server.get('/api/data', (req, res) => {
+  res.json({ message: 'Hello from the server' });
+});
+
+// Start the server
 async function start() {
-  await db()
-  console.log("Starting server...")
+  try {
+    await db();
+    console.log("Database connected");
+    server.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error("Failed to connect to the database", error);
+    process.exit(1);
+  }
 }
 
-start()
+start();
 
-export default server
+export default server;
