@@ -11,14 +11,23 @@ import usersRouter from './routes/users.js';
 import userProfileRouter from './routes/userprofile.js';
 import projectsRouter from './routes/projects.js';
 import db from './db/init.js';
+import session from 'express-session';
+
+const server = express();
+
+// express-session setup, configuration likely can be changed
+server.set('trust proxy', 1);
+server.use(session({
+  secret: 'test-secret-key', //to change
+  resave: false,
+  saveUninitialized: false,
+}));
 
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const port = 3001;
-
-const server = express();
 
 // View engine setup
 server.set('views', path.join(__dirname, 'views'));
