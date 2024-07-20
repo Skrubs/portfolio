@@ -9,21 +9,11 @@ import {
 } from "@mui/material";
 import { Close as CloseIcon } from "@mui/icons-material";
 import Login from "./Login.jsx";
-import { useState } from "react";
 import UserForm from "./UserForm.jsx";
 import Link from "../Link.jsx";
 
-const UserProfileModal = ({ open, handleClose, user }) => {
-  const [showLogin, setShowLogin] = useState(false);
-  const [registerState, setRegisterState] = useState(false);
-
-  const handleClickLogin = () => {
-    setShowLogin(true);
-  };
-
-  function handleRegisterClick() {
-    setRegisterState(true);
-  }
+// eslint-disable-next-line react/prop-types
+const UserProfileModal = ({handleClose}) => {
 
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="user-profile-modal">
@@ -45,9 +35,8 @@ const UserProfileModal = ({ open, handleClose, user }) => {
 
                     </Typography>
                 </Box>
-                {!showLogin &&
-                    <Box display="flex" justifyContent="space-between" mt={4}>
-                        <Button onClick={handleClickLogin}
+                  <Box display="flex" justifyContent="space-between" mt={4}>
+                        <Button
                                 variant="contained"
                                 color="primary"
                         >
@@ -60,9 +49,9 @@ const UserProfileModal = ({ open, handleClose, user }) => {
                             Register
                         </Button>
                     </Box>
-                }
-                {showLogin && <Login x={ 500 } y={ 500 }/>}
-              {registerState && <UserForm/>}
+
+                 <Login x={ 500 } y={ 500 }/>
+            <UserForm/>
             </DialogContent>
 
                 <Link to={'/userForm'}>Register</Link>
