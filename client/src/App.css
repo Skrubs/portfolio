@@ -1,0 +1,101 @@
+
+:root{
+  --Primary-Color: #008000;
+  --Secondary-Color: #ADFF2F;
+  --Content-Primary: #2F4F4F;
+  --Content-Secondary: #C0C0C0;
+  --Content-Border-Primary: #FFFF00;
+  --Primary-Background: linear-gradient(darkslategray, black);
+  --Secondary-Background: linear-gradient(to top right, darkcyan, black);
+}
+
+
+body {
+  background: var(--Primary-Background);
+  min-height: 100vh;
+  margin:0;
+}
+
+
+.login_container{
+  background: var(--Secondary-Background);
+  justify-content: center;
+  align-content: center;
+  min-height: 100vh;
+  margin: 20px;
+  border-radius: 10px;
+  display: grid;
+
+}
+.login_header{
+  display: inline-flex;
+  margin: 10px;
+  padding: 15px;
+  justify-content: center;
+  align-content: center;
+  color: var(--Content-Secondary);
+}
+.login_section_1{
+  display: flex;
+  margin: 20px;
+  padding: 15px;
+  justify-content: center;
+  align-content: center;
+  color: var(--Content-Secondary);
+  border: solid var(--Content-Border-Primary) 5px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 5px 5px rgba(0,0,0,0.75);
+  height: 400px;
+  width: 500px;
+}
+
+.h1_login{
+    color: var(--Content-Secondary);
+    text-shadow: 7px 7px 7px rgba(0, 0, 0, 2);
+    text-effect: outline;
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.login-form div {
+  margin-bottom: 15px;
+}
+
+.login-form label {
+  margin-bottom: 5px;
+}
+
+.login-form input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-form button {
+  padding: 10px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.login-form button[type="button"] {
+  background-color: #6c757d;
+}
+
+.login-button-div{
+  margin: 10px;
+  padding: 5px;
+  display: inline-flex;
+  justify-content: center;
+  align-content: center;
+}
+.register_label{
+  margin: 5px;
+}
