@@ -54,7 +54,6 @@ export default function Login() {
                             <button type="button" onClick={handleCancel}>Cancel</button>
                         </div>
                     </form>
-
                 </section>
             </div>
 

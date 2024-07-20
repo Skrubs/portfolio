@@ -45,7 +45,7 @@ body {
   border: solid var(--Content-Border-Primary) 5px;
   border-radius: 10px;
   box-shadow: 10px 10px 5px 5px rgba(0,0,0,0.75);
-  height: 300px;
+  height: 400px;
   width: 500px;
 }
 
@@ -95,4 +95,7 @@ body {
   display: inline-flex;
   justify-content: center;
   align-content: center;
+}
+.register_label{
+  margin: 5px;
 }
