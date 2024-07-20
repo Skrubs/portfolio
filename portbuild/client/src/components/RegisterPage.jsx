@@ -7,6 +7,7 @@ export default function RegisterPage(){
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [email, setUserEmail] = useState('');
 
     const validatePassword = (password) => {
         const lengthCheck = password.length >= 6 && password.length <= 12;
@@ -68,13 +69,24 @@ export default function RegisterPage(){
                             * at least 1 special character<br/>
                         </h6>
 
-                        <input
-                            placeholder={'username'}
-                            type="text"
-                            id="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
+                        <div>
+                            <input
+                                placeholder={'username'}
+                                type="text"
+                                id="username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <input
+                                placeholder={'email'}
+                                type="text"
+                                id='email'
+                                value={email}
+                                onChange={(e) => setUserEmail(e.target.value)}
+                            />
+                        </div>
                     </div>
                     <div>
 
