@@ -9,8 +9,7 @@
   --Secondary-Background: linear-gradient(to top right, darkcyan, black);
 }
 
-
-body {
+.body {
   background: var(--Primary-Background);
   min-height: 100vh;
   margin:0;
@@ -45,7 +44,7 @@ body {
   border: solid var(--Content-Border-Primary) 5px;
   border-radius: 10px;
   box-shadow: 10px 10px 5px 5px rgba(0,0,0,0.75);
-  height: 400px;
+  height: 500px;
   width: 500px;
 }
 
@@ -98,4 +97,20 @@ body {
 }
 .register_label{
   margin: 5px;
+}
+.register_already {
+  justify-content: left;
+  margin: 2px;
+  padding: 2px;
+  border: solid var(--Content-Border-Primary) 1px;
+  border-radius: 5px;
+  box-shadow: 7px 7px 7px 5px black inset;
+}
+.inner_register{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1px;
+  padding: 1px;
 }

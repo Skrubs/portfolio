@@ -5,13 +5,12 @@ import AppRoutes from "./AppRoutes.jsx";
 
 
 
-
 function App() {
 
   return (
       <div>
           <BrowserRouter>
-              <AppRoutes/>
+            <AppRoutes/>
           </BrowserRouter>
       </div>
   );

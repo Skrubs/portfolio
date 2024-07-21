@@ -9,7 +9,7 @@ export default function Card(){
         <div>
             {/*     Image
                     Name
-                    icon website  icon email follow icon
+                    icon website  icon email icon follow
                     */
             }
         </div>
