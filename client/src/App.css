@@ -9,7 +9,7 @@
   --Secondary-Background: linear-gradient(to top right, darkcyan, black);
 }
 
-.body {
+body {
   background: var(--Primary-Background);
   min-height: 100vh;
   margin:0;
