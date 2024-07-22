@@ -12,6 +12,7 @@ export default function RegisterPage(){
     const [email, setUserEmail] = useState('');
     const [success, setSuccess] = useState(false);
     const home_url = '/';
+    const serverPort = 'http://localhost:5001/users/register';
 
     const validatePassword = (password) => {
         const lengthCheck = password.length >= 6 && password.length <= 12;
@@ -52,7 +53,7 @@ export default function RegisterPage(){
             setSuccess(true);
 
             //Post to /register backend
-            const response = await fetch('/register', {
+            const response = await fetch(serverPort, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -68,8 +69,6 @@ export default function RegisterPage(){
             }
             const userPayload = await response.json();
             console.log('Success', userPayload);
-
-
         } else {
             alert('Please ensure the passwords meet the criteria and match.');
         }

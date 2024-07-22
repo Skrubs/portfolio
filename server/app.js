@@ -9,6 +9,7 @@ import userProfileRouter from "./routes/userprofile.js";
 import projectsRouter from "./routes/projects.js";
 import db from "./db/init.js";
 import dotenv from "dotenv";
+import cors from 'cors';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ const port = process.env.SERVER_PORT || 5000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 server.use(express.static(path.join(__dirname, "public")));
+server.use(cors());
 
 // Middleware setup
 server.use(bodyParser.json());
@@ -26,9 +28,9 @@ server.use(bodyParser.urlencoded({ extended: true }));
 
 // Use routers
 server.use("/", indexRouter);
-server.use("/", usersRouter);
-server.use("/", userProfileRouter);
-server.use("/", projectsRouter);
+server.use("/users", usersRouter);
+server.use("/userprofile", userProfileRouter);
+server.use("/projects", projectsRouter);
 
 // Catch 404 and forward to error handler
 server.use((req, res, next) => {
@@ -36,16 +38,15 @@ server.use((req, res, next) => {
 });
 
 // Error handler
-server.use((req, res, next, err) => {
+server.use((err, req, res, next) => {
   // Set locals, only providing error in development
-  res.locals = err.message;
+  res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // Send JSON error response
   res.status(err.status || 500);
-  res.json({ error: err.message });
+  res.json({ error: res.locals.message || "An error occured"});
 });
-
 
 // Start the server
 async function start() {
