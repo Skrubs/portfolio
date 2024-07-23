@@ -7,6 +7,8 @@ import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
 import userProfileRouter from "./routes/userprofile.js";
 import projectsRouter from "./routes/projects.js";
+import messagesRouter from "./routes/messages.js";
+import portfoliosRouter from "./routes/portfolios.js";
 import db from "./db/init.js";
 import dotenv from "dotenv";
 import cors from 'cors';
@@ -31,6 +33,8 @@ server.use("/", indexRouter);
 server.use("/users", usersRouter);
 server.use("/userprofile", userProfileRouter);
 server.use("/projects", projectsRouter);
+server.use("/messages", messagesRouter);
+server.use("/portfolios", portfoliosRouter);
 
 // Catch 404 and forward to error handler
 server.use((req, res, next) => {

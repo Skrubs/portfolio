@@ -11,7 +11,7 @@ router.post('/register', (req, res) => {
     bcrypt.hash(password, 10)
         .then(hashedPassword => {
             return pool.query(
-                'INSERT INTO usertable (username, email, password) VALUES ($1, $2, $3) RETURNING *',
+                'INSERT INTO UserTable (username, email, password) VALUES ($1, $2, $3) RETURNING *',
                 [username, email, hashedPassword]
             );
         })
@@ -31,18 +31,94 @@ router.post("/users", (req, res) => {
     // To do
 });
 
-// Update user by id
-router.put("/users/:id", (req, res) => {
-    const { id } = req.params;
-    console.log("Updating user in table");
-    // To do
+// Update user information by id
+router.put("/users/:id", async (req, res) => {
+    console.log(`Request to update user: ${req.params.id}`);
+    const id = parseInt(req.params.id);
+    const {firstname, lastname, password, email, theme, state} = req.body;
+
+    if (isNaN(id)) {
+        return res.status(500).json({ error: `Invalid user ID ${id}` });
+    }
+
+    try {
+        let query = 'UPDATE UserTable SET';
+        const values = [];
+        let paramIndex = 1;
+        
+        if (firstname) {
+            console.log(`Retrieved first name: ${firstname}`);
+            query += ` firstname = $${paramIndex}`;
+            values.push(firstname);
+            paramIndex += 1;
+        }
+        if (lastname) {
+            console.log(`Retrieved last name: ${lastname}`);
+            if (values.length > 0) {
+                query += ',';
+            }
+            query += ` lastname = $${paramIndex}`;
+            values.push(lastname);
+            paramIndex += 1;
+        }
+        if (email) {
+            console.log(`Retrieved email: ${email}`);
+            if (values.length > 0) {
+                query += ',';
+            }
+            query += ` email = $${paramIndex}`;
+            values.push(email);
+            paramIndex += 1;
+        }
+        if (theme) {
+            console.log(`Retrieved theme: ${theme}`);
+            if (values.length > 0) {
+                query += ',';
+            }
+            query += ` theme = $${paramIndex}`;
+            values.push(theme);
+            paramIndex += 1;
+        }
+        if (state) {
+            console.log(`Retrieved state: ${state}`);
+            if (values.length > 0) {
+                query += ',';
+            }
+            query += ` state = $${paramIndex}`;
+            values.push(state);
+            paramIndex += 1;
+        }
+        if (password) {
+            console.log(`Retrieved password: ${password}`);
+            if (values.length > 0) {
+                query += ',';
+            }
+            query += ` password = $${paramIndex}`;
+            values.push(await bcrypt.hash(password, 10));
+        }
+
+        query += ` WHERE userid = $${paramIndex + 1} RETURNING *`;
+        values.push(id);
+
+        console.log(query);
+        console.log(values);
+
+        const result = await pool.query(query, values);
+
+        console.log("User password updated.");
+        res.status(201).json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 });
 
 // Delete user by id
 router.delete("/users/:id", (req, res) => {
-    const { id } = req.params;
+    console.log(`Request to delete user by id value: ${req.params.id}`);
+    const id = parseInt(req.params.id);
     pool.query(
-        "DELETE FROM user WHERE userid = $1", [id],
+        "DELETE FROM UserTable WHERE userid = $1", [id],
         (error, result) => {
             if (error) {
                 res.status(500).json({ error: 'Error deleting user' });
@@ -55,6 +131,7 @@ router.delete("/users/:id", (req, res) => {
 
 // New route for deleting all users
 router.delete('/delete_all', async (req, res) => {
+    console.log("Request to delete all users");
     try {
         await pool.query('DELETE FROM UserTable');
         res.status(200).json({ message: 'All users deleted successfully' });
@@ -65,13 +142,12 @@ router.delete('/delete_all', async (req, res) => {
 });
 
 
-
-router.get("/users/:id", function (req, res, next) {
-  console.log(`Getting users by id value: ${req.params.id}`);
+// Get user by id value
+router.get("/users/:id", (req, res) => {
+  console.log(`Request to get user by id value: ${req.params.id}`);
   const id = parseInt(req.params.id);
   pool.query(
-    "SELECT * FROM UserTable WHERE userid = $1",
-    [id],
+    "SELECT * FROM UserTable WHERE userid = $1", [id],
     (error, result) => {
       if (error) {
         throw error;
@@ -83,8 +159,8 @@ router.get("/users/:id", function (req, res, next) {
 
 // Get all users
 router.get("/users", (req, res) => {
-    console.log("Getting list of all users");
-    pool.query("SELECT * FROM user ORDER BY userid ASC", (error, result) => {
+    console.log("Request to get list of all users");
+    pool.query("SELECT * FROM UserTable ORDER BY userid ASC", (error, result) => {
         if (error) {
             res.status(500).json({ error: 'Error fetching users' });
             return;
