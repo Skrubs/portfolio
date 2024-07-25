@@ -2,52 +2,72 @@ import pool from "../db/index.js";
 import pg from "pg";
 const { Client } = pg;
 
-var table_user = `CREATE TABLE IF NOT EXISTS UserTable (
-    userid SERIAL PRIMARY KEY,
-    firstname VARCHAR(255),
-    lastname VARCHAR(255),
-    username VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    state VARCHAR(255)
-    );`;
-var table_user_profile = `CREATE TABLE IF NOT EXISTS UserProfile (
-    userid INTEGER PRIMARY KEY,
-    propic VARCHAR(255),
-    bio VARCHAR(255),
-    workhistory VARCHAR(255),
-    education VARCHAR(255),
-    linkedin VARCHAR(255),
-    github VARCHAR(255),
-    twitterx VARCHAR(255),
-    certifications VARCHAR(255),
-    CONSTRAINT fk_user
-        FOREIGN KEY(userid) 
-        REFERENCES UserTable(userid)
-        ON DELETE CASCADE
-    );`;
-var table_projects = `CREATE TABLE IF NOT EXISTS Projects (
-    projectid SERIAL PRIMARY KEY,
-    userid INTEGER,
-    projectname VARCHAR(255),
-    projectdesc VARCHAR(255),
-    projecturl VARCHAR(255),
-    CONSTRAINT fk_user_project
-        FOREIGN KEY(userid) 
-        REFERENCES UserTable(userid)
-        ON DELETE CASCADE
-    );`;
+var table_users = `CREATE TABLE IF NOT EXISTS UserTable (
+  userid SERIAL PRIMARY KEY,
+  firstname VARCHAR(255),
+  lastname VARCHAR(255),
+  username VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  theme INTEGER,
+  state VARCHAR(255)
+  );`;
+var table_user_profile = `CREATE TABLE IF NOT EXISTS UserProfileTable (
+  userid INTEGER PRIMARY KEY,
+  propic VARCHAR(255),
+  bio VARCHAR(255),
+  workhistory VARCHAR(255),
+  education VARCHAR(255),
+  linkedin VARCHAR(255),
+  github VARCHAR(255),
+  twitterx VARCHAR(255),
+  certifications VARCHAR(255),
+  CONSTRAINT fk_user
+      FOREIGN KEY(userid) 
+      REFERENCES UserTable(userid)
+      ON DELETE CASCADE
+  );`;
+var table_projects = `CREATE TABLE IF NOT EXISTS ProjectTable (
+  projectid SERIAL PRIMARY KEY,
+  userid INTEGER,
+  projectname VARCHAR(255),
+  projectdesc VARCHAR(255),
+  projecturl VARCHAR(255),
+  projectimg VARCHAR(255),
+  CONSTRAINT fk_user_project
+      FOREIGN KEY(userid) 
+      REFERENCES UserTable(userid)
+      ON DELETE CASCADE
+  );`;
+var table_messages = `CREATE TABLE IF NOT EXISTS MessageTable (
+  messageid SERIAL PRIMARY KEY,
+  userid INTEGER,
+  message VARCHAR(255),
+  CONSTRAINT fk_user_project
+    FOREIGN KEY(userid) 
+    REFERENCES UserTable(userid)
+    ON DELETE CASCADE
+)`;
+var table_portfolios = `CREATE TABLE IF NOT EXISTS PortfolioTable (
+  userid INTEGER,
+  image VARCHAR(255),
+  CONSTRAINT fk_user_project
+    FOREIGN KEY(userid) 
+    REFERENCES UserTable(userid)
+    ON DELETE CASCADE
+)`;
 var capstone_db_user = `CREATE ROLE capstone_db_user WITH
-	LOGIN
-	SUPERUSER
-	CREATEDB
-	CREATEROLE
-	INHERIT
-	REPLICATION
-	BYPASSRLS
-	CONNECTION LIMIT -1
-	PASSWORD 'capstone'
-    ;`;
+  LOGIN
+  SUPERUSER
+  CREATEDB
+  CREATEROLE
+  INHERIT
+  REPLICATION
+  BYPASSRLS
+  CONNECTION LIMIT -1
+  PASSWORD 'capstone'
+  ;`;
+  
 
 //Checks for the existence of the database user and creates it if not found. Uses the default
 //postgres credentials that would be entered during installation; this might have to be changed accordingly
@@ -58,7 +78,7 @@ async function checkForDatabaseUser() {
     host: process.env.DB_HOST,
     database: "postgres",
     user: "postgres",
-    password: "1",
+    password: "admin",
     port: 5432,
   });
 
@@ -122,13 +142,19 @@ const init = async () => {
   try {
     console.log("Creating necessary tables...");
     await pooling.query("BEGIN");
-    await pooling.query(table_user);
+    await pooling.query(table_users);
     await pooling.query("COMMIT");
     await pooling.query("BEGIN");
     await pooling.query(table_user_profile);
     await pooling.query("COMMIT");
     await pooling.query("BEGIN");
     await pooling.query(table_projects);
+    await pooling.query("COMMIT");
+    await pooling.query("BEGIN");
+    await pooling.query(table_messages);
+    await pooling.query("COMMIT");
+    await pooling.query("BEGIN");
+    await pooling.query(table_portfolios);
     await pooling.query("COMMIT");
     console.log("Table creation complete.");
   } catch (error) {
