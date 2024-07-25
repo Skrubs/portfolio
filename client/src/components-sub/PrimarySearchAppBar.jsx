@@ -170,6 +170,7 @@ export default function PrimarySearchAppBar() {
           background: "linear-gradient(to right, darkslateblue, dimgray)",
           width: "60%",
           borderRadius: "5%",
+          marginLeft: "25%"
         }}
         position="static"
       >
