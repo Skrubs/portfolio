@@ -24,6 +24,22 @@ router.post('/register', (req, res) => {
         });
 });
 
+
+    router.post('/checkUser', async (req, res) => {
+        const { username } = req.body;
+            try     {
+                const user = await pool.query('SELECT 1 FROM userTable WHERE username = $1', [username]);
+                if (user.rowCount > 0) {
+                    return res.json({ exists: true });
+                }
+                res.json({ exists: false });
+            } catch (error) {
+                console.error('Database query error:', error);
+                res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+
 // Post a user (example endpoint)
 router.post("/users", (req, res) => {
     console.log({ message: "users are here!" });

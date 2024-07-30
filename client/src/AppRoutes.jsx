@@ -4,6 +4,7 @@ import Gallery from "./components/Gallery.jsx";
 import RegisterPage from "./components/RegisterPage.jsx";
 import VerifiedUserHome from "./components/VerifiedUserHome.jsx";
 import VerifiedUserSettings from "./components/VerifiedUserSettings.jsx";
+import Login from "./components-sub/Login.jsx";
 
 
 
@@ -15,6 +16,7 @@ const AppRoutes = ()=>{
             <Route path='/RegisterPage' element={<RegisterPage/>}/>
             <Route path='/VerifiedUserHome' element={<VerifiedUserHome/>}/>
             <Route path='/VerifiedUserSettings' element={<VerifiedUserSettings/>}/>
+            <Route path='/login' element={<Login/>}/>
         </Routes>
     );
 }

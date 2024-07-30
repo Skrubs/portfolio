@@ -13,6 +13,7 @@ export default function RegisterPage(){
     const [success, setSuccess] = useState(false);
     const home_url = '/';
     const serverPort = 'http://localhost:5001/users/register';
+    const [user, setUser] = useState('');
 
     const validatePassword = (password) => {
         const lengthCheck = password.length >= 6 && password.length <= 12;
@@ -64,11 +65,15 @@ export default function RegisterPage(){
                     password
                 }),
             });
+
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const userPayload = await response.json();
-            console.log('Success', userPayload);
+            sessionStorage.setItem('username', JSON.stringify(userPayload.username));
+            setUser(sessionStorage.getItem('username'));
+
+
         } else {
             alert('Please ensure the passwords meet the criteria and match.');
         }
@@ -82,7 +87,7 @@ export default function RegisterPage(){
         <>
             {success ? (
                 <section>
-                    <h1>Your Account has been Created!<br/>
+                    <h1>{user} Your Account has been Created!<br/>
                         Please click the link below to sign in.</h1>
                     <Link to={home_url}>Sign in</Link>
                 </section>

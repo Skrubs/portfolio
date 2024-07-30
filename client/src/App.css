@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 :root{
   --Primary-Color: #008000;
@@ -9,12 +13,72 @@
   --Secondary-Background: linear-gradient(to top right, darkcyan, black);
 }
 
+.homeHeader{
+  display: block;
+  background-color: var(--Secondary-Background);
+  min-height: 300px;
+}
+
+.cardImage{
+  width: 100%;
+  height: 160%;
+  object-fit: cover;
+  transform: translate(0%, -10%) scale(0.65);
+  object-position: top;
+}
+
+.card{
+  width: 400px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.cardTop{
+  flex: 0 0 90%;
+  width: 100%;
+  height: 180px;
+  background-color: var(--Content-Primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px;
+
+}
+
+.cardBottom{
+  flex: 0 0 10%;
+  width: 100%;
+  background-color: var(--Content-Secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1px;
+}
+
+
 body {
   background: var(--Primary-Background);
   min-height: 100vh;
+  min-width: 100%;
   margin:0;
 }
 
+.gridClass{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  column-gap: 10px;
+  row-gap: 20px;
+  max-width: 50%;
+  margin: 20px;
+  align-items: center;
+  justify-content: center;
+
+}
 
 .login_container{
   background: var(--Secondary-Background);
