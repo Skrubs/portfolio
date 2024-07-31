@@ -1,23 +1,32 @@
-import Card from "./Card.jsx";
+import Billy from '../assets/Billy.jpg';
+import Card from './Card';
+import {useEffect, useState} from "react";
+import {peopleList} from "../people.js"; // Import the Card component
 
+export default function CardGrid() {
+    const [users, setUsers] = useState([]);
+    const imageImport = import.meta.glob('../assets/*jpg', {eager:true});
 
+    useEffect(() => {
+        setUsers(peopleList);
+    }, []);
 
-export default function CardGrid(){
-
-    const cards = [];
-
-    for(let i = 0; i < 9; i++){
-        cards.push(<Card key={i}
-                    image={'19'}
-                    link="capstone.com/angelo"
-                    title="Angelo's portfolio"/>)
+    const getImage = (imageName) => {
+        return imageImport[`../assets/${imageName}`]?.default || null;
     }
 
-    return(
-        <div className={'gridClass'}>
+    const cards = users.slice(0, users.length).map((user, index) => (
+        <Card
+            key={index}
+            image={ `${getImage(user.propic) || Billy}`}
+            link={user.email || '#'}
+            title={user.name || 'Unnamed User'}
+        />
+    ));
+
+    return (
+        <div className='gridClass'>
             {cards}
         </div>
     );
-
-
 }

@@ -6,12 +6,15 @@ import {useEffect, useState} from "react";
 import {peopleList} from '../people.js';
 
 
+
 export default function Home() {
+
     const [people, setPeople] = useState(peopleList);
     const serverPort = 'http://localhost:5001';
-
+    const [user , setUser] = useState('');
 
     const checkUserExists = async (username) => {
+
         const response = await fetch(`${serverPort}/users/checkUser`, {
             method: 'POST',
             headers: {
@@ -38,18 +41,23 @@ export default function Home() {
                     return `${name}${randomNumber}@gmail.com`;
                 };
 
-                const email = generateUniqueEmail(person.name);
+                let email = generateUniqueEmail(person.name);
+                let [firstName, lastName] = person.name.split(" ");
+                let userName = `${firstName}${lastName.substring(0,1)}${Math.floor(Math.random()*10000)}`;
 
                 try{
-                    const response = await fetch(`${serverPort}/users/register`, {
+                    const response = await fetch(`${serverPort}/users/loadusers`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            username: person.name,
-                            password: "!passwordYes124",
+                            username: userName,
+                            firstname: firstName,
+                            lastname: lastName,
+                            password: "1",
                             email: email,
+                            state: '1'
                         }),
                     });
 
@@ -66,22 +74,33 @@ export default function Home() {
         });
     }
 
-
-    useEffect(() => {
-        putPeople();
-    }, []);
-
     if(peopleList === undefined){
         setPeople([]);
     }
+
+    useEffect(() => {
+        if(sessionStorage.getItem('username') !== undefined){
+            setUser(sessionStorage.getItem('username'));
+        }
+    }, []);
+
+    useEffect(() => {
+       putPeople();
+    }, [peopleList]);
+
 
     return(
         <div className={'flex flex-col m-32'}>
             <header className={'flex flex-1 h-32 w-full'}>
                 <div className="relative flex flex-col w-full h-16 p-2 m-1">
-                    <Link to={'/login'}>
-                        <AcademicCapIcon className="absolute top-0 right-0"/>
-                    </Link>
+                   <div className={'flex flex-row h-16 w-32'}>
+                       <Link to={'/login'}>
+                           <AcademicCapIcon className="absolute top-0 right-0"/>
+                       </Link>
+                        <div>
+                            {(user !== "") && <h6>Logged In: {user}</h6>}
+                        </div>
+                   </div>
                 </div>
                 <h1 className="text-5xl text-white font-bold text-center mb-8 relative">
                     <span className="relative z-10">Welcome to Capstone</span>
