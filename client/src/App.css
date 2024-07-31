@@ -11,6 +11,21 @@
   --Content-Border-Primary: #FFFF00;
   --Primary-Background: linear-gradient(darkslategray, black);
   --Secondary-Background: linear-gradient(to top right, darkcyan, black);
+  --ThemeTwoPrimary-Color: #D93333;
+  --ThemeTwoSecondary-Color: #0C120C;
+  --ThemeTwoContent-Primary: #6D7275;
+  --ThemeTwoContent-Secondary: #FAFAFA;
+  --ThemeTwoContent-Border-Primary: #E3F2FD;
+  --ThemeTwoPrimary-Background: #94E8B4;
+  --ThemeTwoSecondary-Background: #DEF2C8;
+  --ThemeThreePrimary-Color: #040F0F;
+  --ThemeThreeSecondary-Color: #248232;
+  --ThemeThreeContent-Primary: #2BA84A;
+  --ThemeThreeContent-Secondary: #2D3A3A;
+  --ThemeThreeContent-Border-Primary: #FCFFFC;
+  --ThemeThreePrimary-Background: #FFC857;
+  --ThemeThreeSecondary-Background: #FFFFFF;
+
 }
 
 .homeHeader{
