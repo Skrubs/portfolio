@@ -8,7 +8,7 @@ export default function Card( { image, link, title }){
     return(
         <div className={'card'}>
             <div className={'cardTop'}>
-                <img className={'cardImage'} src={image}/>
+                <img className={'cardImage'} src={image} alt={'picture'}/>
             </div>
             <div className={'cardBottom'}>
                 <a href={`${ link }`}>{ title }</a>
