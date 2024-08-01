@@ -4,79 +4,28 @@ import AcademicCapIcon from "../Icons.jsx";
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {peopleList} from '../people.js';
+import { loadUsers } from "../LoadUsers.jsx";
 
 
 
 export default function Home() {
 
-    const [people, setPeople] = useState(peopleList);
-    const serverPort = 'http://localhost:5001';
+
     const [user , setUser] = useState('');
 
-    const checkUserExists = async (username) => {
 
-        const response = await fetch(`${serverPort}/users/checkUser`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data.exists;
-    };
-
-    const putPeople = ()=>{
-        people.map(async (person) => {
-
-            const userExists = await checkUserExists(person.name);
-            if(!userExists){
-                const generateUniqueEmail = (name) => {
-                    const randomNumber = Math.floor(Math.random() * 1000); // Generates a number between 0 and 999
-                    return `${name}${randomNumber}@gmail.com`;
-                };
-
-                let email = generateUniqueEmail(person.name);
-                let [firstName, lastName] = person.name.split(" ");
-                let userName = `${firstName}${lastName.substring(0,1)}${Math.floor(Math.random()*10000)}`;
-
-                try{
-                    const response = await fetch(`${serverPort}/users/loadusers`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            username: userName,
-                            firstname: firstName,
-                            lastname: lastName,
-                            password: "1",
-                            email: email,
-                            state: '1'
-                        }),
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                }catch(error){
-                    if(error.message.includes('duplicate')){
-                        console.log(`${person.name} already exists.`);
-                    }
-                }
-            }
-
-        });
-    }
-
-    if(peopleList === undefined){
-        setPeople([]);
-    }
+       useEffect(() => {
+            const postUsers = async () =>{
+               for(const person of peopleList){
+                   try{
+                       await loadUsers(person);
+                   }catch(error){
+                       console.error('Failed ot load user: ', error);
+                   }
+               }
+           }
+           postUsers().catch(error =>{console.log(error)});
+    }, []);
 
     useEffect(() => {
         if(sessionStorage.getItem('username') !== undefined){
@@ -84,23 +33,19 @@ export default function Home() {
         }
     }, []);
 
-    useEffect(() => {
-       putPeople();
-    }, [peopleList]);
-
 
     return(
         <div className={'flex flex-col m-32'}>
             <header className={'flex flex-1 h-32 w-full'}>
                 <div className="relative flex flex-col w-full h-16 p-2 m-1">
-                   <div className={'flex flex-row h-16 w-32'}>
-                       <Link to={'/login'}>
-                           <AcademicCapIcon className="absolute top-0 right-0"/>
-                       </Link>
+                    <div className={'flex flex-row h-16 w-32'}>
+                        <Link to={'/login'}>
+                            <AcademicCapIcon className="absolute top-0 right-0"/>
+                        </Link>
                         <div>
                             {(user !== "") && <h6>Logged In: {user}</h6>}
                         </div>
-                   </div>
+                    </div>
                 </div>
                 <h1 className="text-5xl text-white font-bold text-center mb-8 relative">
                     <span className="relative z-10">Welcome to Capstone</span>
@@ -110,8 +55,14 @@ export default function Home() {
                     ></span>
                 </h1>
             </header>
-            <section className={'flex flex-col justify-center items-center'}>
-                <CardGrid/>
+            <section className={'grid grid-cols-[1fr, 1fr, 1fr]'}>
+                <div className={'flex flex-col border'}></div>
+                <div className={'flex flex-col justify-center items-center'}>
+                    <CardGrid/>
+                </div>
+                <div className={'border'}>
+                    <h1>div2</h1>
+                </div>
             </section>
         </div>
     );
