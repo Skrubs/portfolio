@@ -9,7 +9,7 @@
   --Content-Primary: #2F4F4F;
   --Content-Secondary: #C0C0C0;
   --Content-Border-Primary: #FFFF00;
-  --Primary-Background: linear-gradient(darkslategray, black);
+  --Primary-Background: linear-gradient(darkslategray, #3c424e);
   --Secondary-Background: linear-gradient(to top right, darkcyan, black);
   --ThemeTwoPrimary-Color: #D93333;
   --ThemeTwoSecondary-Color: #0C120C;
@@ -25,7 +25,12 @@
   --ThemeThreeContent-Border-Primary: #FCFFFC;
   --ThemeThreePrimary-Background: #FFC857;
   --ThemeThreeSecondary-Background: #FFFFFF;
+  --logodivopacity:0.8;
 
+}
+.logodiv{
+  border: 2px solid black;
+  padding: 10px; /* Optional: Adds space between the solid border and the content */
 }
 
 .homeHeader{
