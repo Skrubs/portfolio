@@ -58,23 +58,28 @@ const bcrypt = bcryptjs;
                 res.status(201).json(result.rows);
             })
             .catch(error =>{
-                console.error("error loading users", error);
+                console.error(error);
                 res.status(500).json({error: "Error registering user"});
             });
     });
 
 
     router.post('/checkUser', async (req, res) => {
-        const { username } = req.body;
-            try     {
-                const user = await pool.query('SELECT 1 FROM userTable WHERE username = $1', [username]);
-                if (user.rowCount > 0) {
-                    return res.json({ exists: true });
-                }
-                res.json({ exists: false });
-            } catch (error) {
-                console.error('Database query error:', error);
-                res.status(500).json({ error: 'Internal Server Error' });
+        const { firstName, lastName } = req.body;
+        try {
+            const user = await pool.query(
+                'SELECT 1 FROM userTable WHERE firstname = $1 AND lastname = $2',
+                [firstName, lastName]
+            );
+
+            if (user.rowCount > 0) {
+                return res.json({ exists: true });
+            }
+
+            res.json({ exists: false });
+        } catch (error) {
+            console.error('Database query error:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     });
 

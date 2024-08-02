@@ -5,89 +5,32 @@ import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {peopleList} from '../people.js';
 import websitelogo from '../assets/websitelogo.jpg';
-
-
+import { loadUsers } from "../LoadUsers.jsx";
 
 export default function Home() {
 
-    const [people, setPeople] = useState(peopleList);
-    const serverPort = 'http://localhost:5001';
+
     const [user , setUser] = useState('');
 
-    const checkUserExists = async (username) => {
 
-        const response = await fetch(`${serverPort}/users/checkUser`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data.exists;
-    };
-
-    const putPeople = ()=>{
-        people.map(async (person) => {
-
-            const userExists = await checkUserExists(person.name);
-            if(!userExists){
-                const generateUniqueEmail = (name) => {
-                    const randomNumber = Math.floor(Math.random() * 1000); // Generates a number between 0 and 999
-                    return `${name}${randomNumber}@gmail.com`;
-                };
-
-                let email = generateUniqueEmail(person.name);
-                let [firstName, lastName] = person.name.split(" ");
-                let userName = `${firstName}${lastName.substring(0,1)}${Math.floor(Math.random()*10000)}`;
-
-                try{
-                    const response = await fetch(`${serverPort}/users/loadusers`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            username: userName,
-                            firstname: firstName,
-                            lastname: lastName,
-                            password: "1",
-                            email: email,
-                            state: '1'
-                        }),
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                }catch(error){
-                    if(error.message.includes('duplicate')){
-                        console.log(`${person.name} already exists.`);
-                    }
-                }
-            }
-
-        });
-    }
-
-    if(peopleList === undefined){
-        setPeople([]);
-    }
+       useEffect(() => {
+            const postUsers = async () =>{
+               for(const person of peopleList){
+                   try{
+                       await loadUsers(person);
+                   }catch(error){
+                       console.error('Failed ot load user: ', error);
+                   }
+               }
+           }
+           postUsers().catch(error =>{console.log(error)});
+    }, []);
 
     useEffect(() => {
         if(sessionStorage.getItem('username') !== undefined){
             setUser(sessionStorage.getItem('username'));
         }
     }, []);
-
-    useEffect(() => {
-       putPeople();
-    }, [peopleList]);
 
 
     return(
@@ -103,7 +46,6 @@ export default function Home() {
                             {(user !== "") && <h6>Logged In: {user}</h6>}
                         </div>
                     </div>
-
                 </div>
                 <div className={"flex flex-col items-center logodiv"} style={{ background: 'var(--Primary-Background)'}}>
                     <img
@@ -131,8 +73,14 @@ export default function Home() {
                 </div>
 
             </header>
-            <section className={'flex flex-col justify-center items-center'}>
-                <CardGrid/>
+            <section className={'grid grid-cols-[1fr, 1fr, 1fr]'}>
+                <div className={'flex flex-col border'}></div>
+                <div className={'flex flex-col justify-center items-center'}>
+                    <CardGrid/>
+                </div>
+                <div className={'border'}>
+                    <h1>div2</h1>
+                </div>
             </section>
         </div>
     );
