@@ -71,6 +71,8 @@ export default function RegisterPage(){
             }
             const userPayload = await response.json();
             sessionStorage.setItem('username', JSON.stringify(userPayload.username));
+            //made sure to save id to session storage it only saved the username before
+            sessionStorage.setItem("id",JSON.stringify(userPayload.userid));
             setUser(sessionStorage.getItem('username'));
 
 
