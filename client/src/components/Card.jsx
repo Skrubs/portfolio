@@ -1,18 +1,20 @@
 
 import PropTypes from "prop-types";
+import {Link, Route} from "react-router-dom";
 
 
 
 export default function Card( { image, link, title }){
-
+let address = "/user/" + link;
     return(
         <div className={'card'}>
+            <Link to={address}>
             <div className={'cardTop'}>
                 <img className={'cardImage'} src={image} alt={'picture'}/>
             </div>
             <div className={'cardBottom'}>
-                <a href={`${ link }`}>{ title }</a>
-            </div>
+                { title }
+            </div></Link>
         </div>
     );
 
