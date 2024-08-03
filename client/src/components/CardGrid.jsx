@@ -19,7 +19,7 @@ export default function CardGrid() {
         <Card
             key={index}
             image={ `${getImage(user.propic) || Billy}`}
-            link={user.email || '#'}
+            link={user.name.replaceAll(" ", "_") || '#'}
             title={user.name || 'Unnamed User'}
         />
     ));
