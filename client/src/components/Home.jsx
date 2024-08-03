@@ -52,7 +52,7 @@ export default function Home() {
                         src={websitelogo}
                         alt="Website Logo"
                         className="w-32 rounded-lg"
-                        style={{ paddingBottom: '16px' }}
+                        style={{ paddingBottom: '5px' }}
                     />
                     <h1 className="text-4xl text-white font-bold text-center mb-8 relative" style={{
                         textShadow: `

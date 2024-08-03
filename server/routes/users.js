@@ -87,78 +87,119 @@ const bcrypt = bcryptjs;
 router.put("/users/:id", async (req, res) => {
     console.log(`Request to update user: ${req.params.id}`);
     const id = parseInt(req.params.id);
-    const {firstname, lastname, password, email, theme, state} = req.body;
+    const {
+        firstname, lastname, password, email, theme, state,
+        propic, bio, workhistory, education, linkedin, github, twitterx, certifications
+    } = req.body;
 
     if (isNaN(id)) {
         return res.status(500).json({ error: `Invalid user ID ${id}` });
     }
 
     try {
-        let query = 'UPDATE UserTable SET';
-        const values = [];
+        let userQuery = 'UPDATE UserTable SET';
+        const userValues = [];
         let paramIndex = 1;
-        
+
         if (firstname) {
             console.log(`Retrieved first name: ${firstname}`);
-            query += ` firstname = $${paramIndex}`;
-            values.push(firstname);
+            userQuery += ` firstname = $${paramIndex}`;
+            userValues.push(firstname);
             paramIndex += 1;
         }
         if (lastname) {
             console.log(`Retrieved last name: ${lastname}`);
-            if (values.length > 0) {
-                query += ',';
+            if (userValues.length > 0) {
+                userQuery += ',';
             }
-            query += ` lastname = $${paramIndex}`;
-            values.push(lastname);
+            userQuery += ` lastname = $${paramIndex}`;
+            userValues.push(lastname);
             paramIndex += 1;
         }
         if (email) {
             console.log(`Retrieved email: ${email}`);
-            if (values.length > 0) {
-                query += ',';
+            if (userValues.length > 0) {
+                userQuery += ',';
             }
-            query += ` email = $${paramIndex}`;
-            values.push(email);
+            userQuery += ` email = $${paramIndex}`;
+            userValues.push(email);
             paramIndex += 1;
         }
         if (theme) {
             console.log(`Retrieved theme: ${theme}`);
-            if (values.length > 0) {
-                query += ',';
+            if (userValues.length > 0) {
+                userQuery += ',';
             }
-            query += ` theme = $${paramIndex}`;
-            values.push(theme);
+            userQuery += ` theme = $${paramIndex}`;
+            userValues.push(theme);
             paramIndex += 1;
         }
         if (state) {
             console.log(`Retrieved state: ${state}`);
-            if (values.length > 0) {
-                query += ',';
+            if (userValues.length > 0) {
+                userQuery += ',';
             }
-            query += ` state = $${paramIndex}`;
-            values.push(state);
+            userQuery += ` state = $${paramIndex}`;
+            userValues.push(state);
             paramIndex += 1;
         }
         if (password) {
             console.log(`Retrieved password: ${password}`);
-            if (values.length > 0) {
-                query += ',';
+            if (userValues.length > 0) {
+                userQuery += ',';
             }
-            query += ` password = $${paramIndex}`;
-            values.push(await bcrypt.hash(password, 10));
+            userQuery += ` password = $${paramIndex}`;
+            userValues.push(await bcrypt.hash(password, 10));
+            paramIndex += 1;
         }
 
-        query += ` WHERE userid = $${paramIndex + 1} RETURNING *`;
-        values.push(id);
+        userQuery += ` WHERE userid = $${paramIndex} RETURNING *`;
+        userValues.push(id);
 
-        console.log(query);
-        console.log(values);
+        console.log(userQuery);
+        console.log(userValues);
 
-        const result = await pool.query(query, values);
+        const userResult = await pool.query(userQuery, userValues);
 
-        console.log("User password updated.");
-        res.status(201).json(result.rows[0]);
+        // Insert or update UserProfileTable
+        const profileQuery = `
+            INSERT INTO UserProfileTable (userid, propic, bio, workhistory, education, linkedin, github, twitterx, certifications)
+            VALUES (
+                $1, $2, $3, $4, $5, $6, $7, $8, $9
+            )
+            ON CONFLICT (userid) DO UPDATE SET
+                propic = EXCLUDED.propic,
+                bio = EXCLUDED.bio,
+                workhistory = EXCLUDED.workhistory,
+                education = EXCLUDED.education,
+                linkedin = EXCLUDED.linkedin,
+                github = EXCLUDED.github,
+                twitterx = EXCLUDED.twitterx,
+                certifications = EXCLUDED.certifications
+            RETURNING *;
+        `;
+
+        const profileValues = [
+            id,  // userid from the route parameter
+            propic,  // shifted to the second position
+            bio,
+            workhistory,
+            education,
+            linkedin,
+            github,
+            twitterx,
+            certifications
+        ];
+
+        console.log(profileQuery);
+        console.log(profileValues);
+
+        const profileResult = await pool.query(profileQuery, profileValues);
+
+        res.status(201).json({
+            user: userResult.rows[0],
+            profile: profileResult.rows[0]
+        });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
