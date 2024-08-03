@@ -16,7 +16,7 @@ export default function Toast(text, messageType) {
     <div>
       <Snackbar
         open={open}
-        autoHideDuration={5000}
+        autoHideDuration={2000}
         onClose={handleClose}
         message={text}
       />

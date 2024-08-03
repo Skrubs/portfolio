@@ -26,11 +26,11 @@ const bcrypt = bcryptjs;
     router.post('/checkLogin', async (req, res) => {
         try{
             const { username, password } = req.body;
-            const result = await pool.query('SELECT password FROM userTable WHERE username = $1',[username]);
+            const result = await pool.query('SELECT userid, password FROM userTable WHERE username = $1',[username]);
             if(result.rows.length > 0){
                 const isValid = await bcrypt.compare(password, result.rows[0].password);
                 if(isValid){
-                    return res.status(200).json({ success: true, message: 'Login Success'});
+                  return res.status(200).json({ success: true, message: 'Login Success', userId: `${result.rows[0].userid}`});
                 }
                 return res.status(401).json({success: false, message: "username/password incorrect"});
             }
@@ -43,6 +43,7 @@ const bcrypt = bcryptjs;
         }
 
     });
+
 
     // Post a user (example endpoint)
     router.post("/loadusers", (req, res) => {
@@ -62,6 +63,8 @@ const bcrypt = bcryptjs;
                 res.status(500).json({error: "Error registering user"});
             });
     });
+
+    router.get('/id')
 
 
     router.post('/checkUser', async (req, res) => {
