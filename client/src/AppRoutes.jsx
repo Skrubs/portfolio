@@ -18,7 +18,7 @@ const AppRoutes = ()=>{
             <Route path='/VerifiedUserHome' element={<VerifiedUserHome/>}/>
             <Route path='/VerifiedUserSettings' element={<VerifiedUserSettings/>}/>
             <Route path='/login' element={<Login/>}/>
-            <Route path='/ProfilePage' element={<ProfilePage/>}/>
+            <Route path='/user/:URLName' element={<ProfilePage/>} />
         </Routes>
     );
 }
