@@ -4,8 +4,9 @@ import AcademicCapIcon from "../Icons.jsx";
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {peopleList} from '../people.js';
-import websitelogo from '../assets/websitelogo.jpg';
+import websiteLogo from '../assets/websitelogo.jpg';
 import { loadUsers } from "../LoadUsers.jsx";
+import {ArrowLeft} from "@mui/icons-material";
 
 export default function Home() {
 
@@ -38,7 +39,7 @@ export default function Home() {
 
             <header className={'flex flex-1 h-32 w-full'}>
                 <div className="relative flex flex-col w-full h-16 p-2 m-1">
-                    <div className={'flex flex-row h-16 w-32'}>
+                   <div className={'flex flex-row h-16 w-32'}>
                         <Link to={'/login'}>
                             <AcademicCapIcon className="absolute top-0 right-0"/>
                         </Link>
@@ -49,7 +50,7 @@ export default function Home() {
                 </div>
                 <div className={"flex flex-col items-center logodiv"} style={{ background: 'var(--Primary-Background)'}}>
                     <img
-                        src={websitelogo}
+                        src={websiteLogo}
                         alt="Website Logo"
                         className="w-32 rounded-lg"
                         style={{ paddingBottom: '5px' }}

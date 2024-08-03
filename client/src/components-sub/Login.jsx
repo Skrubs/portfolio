@@ -51,8 +51,10 @@ export default function Login() {
 
 
                     })
-                    .catch(error =>{`log in error ${error}`});
-                        handleMessage("Login Failed")
+                    .catch((error) =>{
+                        handleMessage('Login Error', error);
+                    });
+
             };
 
         const handleCancel = () => {
