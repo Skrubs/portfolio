@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {peopleList} from '../people.js';
 import { loadUsers } from "../LoadUsers.jsx";
+import websiteLogo from '../assets/websitelogo.jpg';
 
 
 
@@ -35,7 +36,7 @@ export default function Home() {
 
 
     return(
-        <div className={'flex flex-col m-32'}>
+        <div className={'flex flex-col m-1'}>
             <header className={'flex flex-1 h-32 w-full'}>
                 <div className="relative flex flex-col w-full h-16 p-2 m-1">
                     <div className={'flex flex-row h-16 w-32'}>
@@ -47,13 +48,31 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-                <h1 className="text-5xl text-white font-bold text-center mb-8 relative">
-                    <span className="relative z-10">Welcome to Capstone</span>
-                    <span
-                        className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur-md opacity-75 transform scale-110"
-                        aria-hidden="true"
-                    ></span>
-                </h1>
+                <div className={"flex flex-col items-center logodiv"} style={{ background: 'var(--Primary-Background)'}}>
+                    <img
+                        src={websiteLogo}
+                        alt="Website Logo"
+                        className="w-32 rounded-lg"
+                        style={{ paddingBottom: '16px' }}
+                    />
+                    <h1 className="text-4xl text-white font-bold text-center mb-8 relative" style={{
+                        textShadow: `
+                  2px 4px 0 #000, 
+                  -2px -2px 0 #000, 
+                  2px -2px 0 #000, 
+                  -2px 2px 0 #000
+                `
+                    }}>
+
+                        <span className="relative z-10">Welcome to Capstone</span>
+                        <span
+                            className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur-md opacity-5 transform scale-110"
+                            aria-hidden="true"
+                        ></span>
+                    </h1>
+
+                </div>
+
             </header>
             <section className={'grid grid-cols-[1fr, 1fr, 1fr]'}>
                 <div className={'flex flex-col border'}></div>

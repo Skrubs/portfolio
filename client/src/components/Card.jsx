@@ -1,9 +1,13 @@
 
 import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
 
 
 
 export default function Card( { image, link, title }){
+
+
+
 
     return(
         <div className={'card'}>
@@ -11,7 +15,7 @@ export default function Card( { image, link, title }){
                 <img className={'cardImage'} src={image} alt={'picture'}/>
             </div>
             <div className={'cardBottom'}>
-                <a href={`${ link }`}>{ title }</a>
+                <Link to={'/ProfilePage'}>{link}</Link>
             </div>
         </div>
     );

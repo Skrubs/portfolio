@@ -1,6 +1,6 @@
 import "../App.css";
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 
 
@@ -73,17 +73,19 @@ export default function Login() {
                 <section className={'login_section_1'}>
                     <form onSubmit={handleSubmit} className="login-form">
                         <div>
-                            <label htmlFor="username">Username:</label>
+                            <label className={'mr-2 p-1'} htmlFor="username">Username:</label>
                             <input
                                 type="text"
                                 id="username"
+                                placeholder={'username'}
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
                         </div>
                         <div>
-                            <label htmlFor="password">Password:</label>
+                            <label className={'mr-2 p-1'} htmlFor="password">Password:</label>
                             <input
+                                placeholder={'password'}
                                 type="password"
                                 id="password"
                                 value={password}
@@ -93,6 +95,9 @@ export default function Login() {
                         <div className={'login-button-div'}>
                             <button type="submit" onClick={handleSubmit}>Submit</button>
                             <button type="button" onClick={handleCancel}>Cancel</button>
+                        </div>
+                        <div>
+                            <Link className={'hover:text-blue-400'} to={'/RegisterPage'}>Register</Link>
                         </div>
                     </form>
                     <div>

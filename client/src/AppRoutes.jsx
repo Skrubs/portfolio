@@ -5,6 +5,7 @@ import RegisterPage from "./components/RegisterPage.jsx";
 import VerifiedUserHome from "./components/VerifiedUserHome.jsx";
 import VerifiedUserSettings from "./components/VerifiedUserSettings.jsx";
 import Login from "./components-sub/Login.jsx";
+import ProfilePage from "./components/ProfilePage.jsx";
 
 
 
@@ -17,6 +18,7 @@ const AppRoutes = ()=>{
             <Route path='/VerifiedUserHome' element={<VerifiedUserHome/>}/>
             <Route path='/VerifiedUserSettings' element={<VerifiedUserSettings/>}/>
             <Route path='/login' element={<Login/>}/>
+            <Route path='/ProfilePage' element={<ProfilePage/>}/>
         </Routes>
     );
 }

@@ -1,11 +1,13 @@
 import {useState} from "react";
-import { Link } from 'react-router-dom';
+import {Link, redirect} from 'react-router-dom';
 
 
 
 export default function RegisterPage(){
     const[username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -62,6 +64,8 @@ export default function RegisterPage(){
                 body: JSON.stringify({
                     username,
                     email,
+                    firstName,
+                    lastName,
                     password
                 }),
             });
@@ -72,7 +76,7 @@ export default function RegisterPage(){
             const userPayload = await response.json();
             sessionStorage.setItem('username', JSON.stringify(userPayload.username));
             setUser(sessionStorage.getItem('username'));
-
+            return redirect(home_url);
 
         } else {
             alert('Please ensure the passwords meet the criteria and match.');
@@ -81,6 +85,10 @@ export default function RegisterPage(){
     const handleCancel = ()=>{
         setUsername('');
         setPassword('');
+        setFirstName('');
+        setLastName('');
+        setConfirmPassword('');
+        return redirect('home_url');
     }
 
     return(
@@ -89,22 +97,16 @@ export default function RegisterPage(){
                 <section>
                     <h1>{user} Your Account has been Created!<br/>
                         Please click the link below to sign in.</h1>
-                    <Link to={home_url}>Sign in</Link>
+                    <Link to={'/'}>Sign in</Link>
                 </section>
-            ) : (<div className={'login_container'}>
-                <header className={'login_header'}>
-                    <h1 className={'h1_login'}>Register</h1>
+            ) : (<div className={'border-4 bg-green-800 flex flex-col p-4' +
+                                ' items-center align-middle justify-items-center mt-64'}>
+                <header className={''}>
+                    <h1 className={'text-4xl text-blue-400'}>Register</h1>
                 </header>
-                <section className={'login_section_1'}>
+                <section className={'mt-6'}>
                     <form onSubmit={handleSubmit} className="login-form">
                         <div>
-                            <h6>To register please enter the following information.<br/>
-                                Password must:<br/>
-                                * 6-12 Characters<br/>
-                                * at least 1 uppercase<br/>
-                                * at least 1 special character<br/>
-                            </h6>
-
                             <div>
                                 <input
                                     placeholder={'username'}
@@ -124,9 +126,26 @@ export default function RegisterPage(){
                                     onChange={(e) => setUserEmail(e.target.value)}
                                 />
                             </div>
+                            <div>
+                                <input
+                                    placeholder={'first name'}
+                                    type="text"
+                                    id='firstname'
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    placeholder={'last name'}
+                                    type="text"
+                                    id='lastname'
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                />
+                            </div>
                         </div>
                         <div>
-
                             <input
                                 placeholder={'password'}
                                 type="password"

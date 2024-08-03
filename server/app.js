@@ -41,15 +41,17 @@ server.use((req, res, next) => {
   next(createError(404));
 });
 
-// Error handler
 server.use((err, req, res, next) => {
-  // Set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
 
-  // Send JSON error response
-  res.status(err.status || 500);
-  res.json({ error: res.locals.message || "An error occured"});
+  const error = err && typeof err === 'object' ? err : {};
+
+  const message = error.message || "An error occurred";
+  const errorDetails = req.app.get("env") === "development" ? err : {};
+
+    res.status(error.status || 500).json({
+    error: message,
+    details: errorDetails
+  });
 });
 
 // Start the server

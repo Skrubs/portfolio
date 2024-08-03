@@ -7,12 +7,12 @@ const bcrypt = bcryptjs;
 
     // Registering users
     router.post('/register', (req, res) => {
-        const {username, email, password } = req.body;
+        const {username, email, password, firstName, lastName } = req.body;
         bcrypt.hash(password, 10)
             .then(hashedPassword => {
                 return pool.query(
-                    'INSERT INTO UserTable (username, email, password) VALUES ($1, $2, $3) RETURNING *',
-                    [username, email, hashedPassword]
+                    'INSERT INTO UserTable (username, email, password, firstname, lastname) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+                    [username, email, hashedPassword, firstName, lastName]
                 );
             })
             .then(result => {
@@ -194,21 +194,23 @@ router.delete('/delete_all', async (req, res) => {
 });
 
 router.get("/users/:id", (req, res) => {
-  console.log(`Request to get user by id value: ${req.params.id}`);
-  const id = parseInt(req.params.id);
+   const id = parseInt(req.params.id);
   pool.query(
     "SELECT * FROM UserTable WHERE userid = $1", [id],
     (error, result) => {
       if (error) {
-        throw error;
+        console.error("Database error:", error);
+        return res.status(500).json({error: "internal error"});
       }
-      res.send(result.rows);
+      if(result.rows.length === 0){
+          return res.status(404).json({error: "user not found"});
+      }
+      res.send(result.rows[0]);
     },
   );
 });
 
 router.get("/users", (req, res) => {
-    console.log("Request to get list of all users");
     pool.query("SELECT * FROM UserTable ORDER BY userid ASC", (error, result) => {
         if (error) {
             res.status(500).json({ error: 'Error fetching users' });
