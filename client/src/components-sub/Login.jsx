@@ -24,7 +24,7 @@ export default function Login() {
 
             const handleSubmit = (event) => {
                 event.preventDefault();
-                fetch(`${serverPort}/users/checkLogin`,
+                fetch(`${serverPort}/users/users/checkLogin`,
                     {
                             method: "POST",
                             headers: {
