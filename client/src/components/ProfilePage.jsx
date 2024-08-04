@@ -3,9 +3,8 @@ import {useState, useEffect} from "react";
 import {Link, useParams} from 'react-router-dom';
 import {peopleList} from "../people.js";
 import {PencilIcon} from "@heroicons/react/16/solid/index.js";
-import Card from "./Card.jsx";
-import BlogCard from "../components-sub/BlogCard.jsx";
 import BlogDataForm from "../components-sub/BlogDataForm.jsx";
+import Blogs from "../components-sub/Blogs.jsx";
 
 
 
@@ -20,8 +19,8 @@ export default function ProfilePage(){
     const [cert1, setCert1] = useState('');
     const [cert2, setCert2] = useState('');
     const [myPage, setMyPage] = useState(false);
-    const [isExpanded, setIsExpanded] = useState(false);
     const [isBlogEdit, setIsEditBlog] = useState(false);
+
 
     const isMyProfile = ()=>{
         if(sessionStorage.getItem('userid') !== null){
@@ -137,16 +136,16 @@ export default function ProfilePage(){
                         <h1 className={'text-3xl text-amber-200'}>stuff</h1>
                     </div>
                     <div className={'border rounded-xl flex flex-col items-center m-4 p-4 min-h-16 min-w-[33%] bg-[linear-gradient(to_bottom,_darkslategray,_white)] '}>
-                        <div className={'flex flex-row p-1 m-1 mb-16'}>
+                        <div className={'flex flex-row p-1 m-1 mb-16 gap-4'}>
                             <h1 className={'text-3xl text-amber-200'}>
                                 BLOG
                                 <hr/>
                             </h1>
                             {myPage && <div className={'h-8 w-8 align-middle items-center'}><PencilIcon onClick={handleBlogEdit} className={'cursor-pointer'}/></div>}
                                        </div>
-                        {isBlogEdit && <BlogDataForm userid={sessionStorage.getItem('userid')}/>}
+                        {isBlogEdit && <BlogDataForm />}
                         <div className={'m-4'}>
-                            <BlogCard/>
+                            <Blogs/>
                         </div>
                     </div>
                     <div
