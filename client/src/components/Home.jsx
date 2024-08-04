@@ -6,12 +6,38 @@ import {useEffect, useState} from "react";
 import {peopleList} from '../people.js';
 import websiteLogo from '../assets/websitelogo.jpg';
 import { loadUsers } from "../LoadUsers.jsx";
-import {ArrowLeft} from "@mui/icons-material";
 
 export default function Home() {
 
 
     const [user , setUser] = useState('');
+    const [userLoggedIn, setUserLoggedIn] = useState(false);
+    const [profileAddress, setProfileAddress] = useState('');
+    const [id, setId] = useState('');
+
+    const idCheck = () =>{
+        if(sessionStorage.getItem('userid') !== undefined || ""){
+            setId(sessionStorage.getItem('userid'));
+        }
+    }
+
+    useEffect(() => {
+       idCheck();
+       if(id !== null || ''){
+            fetch(`http://localhost:5001/users/users/${id}`)
+                .then(res =>{
+                    if(!res.ok){
+                        throw new Error("New Error");
+                    }
+                    return res.json();
+                })
+                .then(data =>{
+                   setProfileAddress(`/user/${data.firstname}_${data.lastname}`)
+                })
+                .catch((error) =>{ console.error(error)});
+        }
+
+    }, [id]);
 
 
        useEffect(() => {
@@ -28,8 +54,9 @@ export default function Home() {
     }, []);
 
     useEffect(() => {
-        if(sessionStorage.getItem('username') !== undefined){
-            setUser(sessionStorage.getItem('username'));
+        if(sessionStorage.getItem('userid') !== null){
+             setUser(sessionStorage.getItem('username'));
+             setUserLoggedIn(true);
         }
     }, []);
 
@@ -38,15 +65,18 @@ export default function Home() {
         <div className={'flex flex-col m-32'}>
 
             <header className={'flex flex-1 h-32 w-full'}>
-                <div className="relative flex flex-col w-full h-16 p-2 m-1">
-                   <div className={'flex flex-row h-16 w-32'}>
-                        <Link to={'/login'}>
+                <div className="relative flex flex-row w-full h-auto p-2 m-1 rounded-xl align-top">
+                    <div className={'flex flex-row h-16 w-32 '}>
+                        <Link className={'mr-4 mt-1'} to={'/login'}>
                             <AcademicCapIcon className="absolute top-0 right-0"/>
                         </Link>
                         <div>
-                            {(user !== "") && <h6>Logged In: {user}</h6>}
+                            {(user !== "") && <h6 className={'mt-1'}>Logged In: {user}</h6>}
                         </div>
                     </div>
+                    {userLoggedIn && <div className={'flex flex-row w-24 h-8 m-0 ml-12 p-1 rounded-md drop-shadow-lg hover:drop-shadow-sm'}>
+                        <Link className={'bg-green-800 hover:b-green-400 rounded-md p-1 m-1 w-36 h-8'} to={profileAddress}>My Profile</Link>
+                    </div>}
                 </div>
                 <div className={"flex flex-col items-center logodiv"} style={{ background: 'var(--Primary-Background)'}}>
                     <img

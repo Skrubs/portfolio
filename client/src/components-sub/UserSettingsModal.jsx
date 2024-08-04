@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Button, Typography, TextField, List, ListItem, ListItemText, IconButton } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-
-
-const serverPort = 'http://localhost:5001/users/users';
 
 // Updated list of settings
 const settings = [
@@ -28,10 +24,6 @@ const settings = [
 function getSessionStorageKey() {
     return sessionStorage.getItem('id');
 }
-
-
-
-
 
 const UserSettingsModal = () => {
     const [selectedSetting, setSelectedSetting] = useState('password');
@@ -57,15 +49,10 @@ const UserSettingsModal = () => {
         setUserInfo({ ...userInfo, [name]: value });
     };
 
-
-
-
     //console.log(checkUser);
 // Function to update user information
     async function updateUser(id, userInfo) {
         const url = `http://localhost:5001/users/users/${id}`;
-
-
         try {
             const response = await fetch(url, {
                 method: 'PUT',
@@ -89,11 +76,7 @@ const UserSettingsModal = () => {
 
     const handleSave = async () => {
         const userId = getSessionStorageKey();
-
         if (userId) {
-
-
-
             // Only include the fields that have been modified
             const updatedInfo = {};
             Object.keys(userInfo).forEach(key => {

@@ -1,10 +1,8 @@
-//import Banner from "../assets/Billy.jpg";
 import '../App.css';
 import {useState, useEffect} from "react";
 import {Link, useParams} from 'react-router-dom';
 import {peopleList} from "../people.js";
-import {ArrowLeft} from "@mui/icons-material";
-import Button from "@mui/material/Button";
+
 
 
 export default function ProfilePage(){

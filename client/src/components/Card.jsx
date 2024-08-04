@@ -5,9 +5,9 @@ import {Link, Route} from "react-router-dom";
 
 
 export default function Card( { image, link, title }){
-let address = "/user/" + link;
+const address = "/user/" + link;
     return(
-        <div className={'card'}>
+        <div className={'card hover:scale-125 hover:border-4'}>
             <Link to={address}>
             <div className={'cardTop'}>
                 <img className={'cardImage'} src={image} alt={'picture'}/>
