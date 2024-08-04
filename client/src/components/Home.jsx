@@ -109,8 +109,11 @@ export default function Home() {
                 <div className={'flex flex-col justify-center items-center'}>
                     <CardGrid/>
                 </div>
-                <div className={'border'}>
-                    <h1>div2</h1>
+                <hr/>
+                <div className={''}>
+                    <h1>CapStone Project CMSC495<br/>
+                        Contributors @Angelo @Dalton @Devon @Devon @William @Anthony @Alan
+                    </h1>
                 </div>
             </section>
         </div>

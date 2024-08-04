@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Button, Typography, TextField, List, ListItem, ListItemText, IconButton } from '@mui/material';
+import { useState } from 'react';
+import { Box, Button, Typography, TextField, List, ListItem, ListItemText, } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
@@ -22,7 +22,8 @@ const settings = [
 
 // Function to get the session storage key for 'username'
 function getSessionStorageKey() {
-    return sessionStorage.getItem('id');
+
+    return sessionStorage.getItem('userid');
 }
 
 const UserSettingsModal = () => {

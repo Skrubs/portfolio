@@ -6,12 +6,12 @@ const router = express.Router();
 
 router.post("/messages", (req, res) => {
   console.log("Adding message into table");
-  const {username, message} = req.body;
-  const values = [username, message];
+  const {userid, message} = req.body;
+  const values = [userid, message];
   const query = `INSERT INTO MessageTable (userid, message) 
     SELECT u.userid, $2
     FROM UserTable u
-    WHERE u.username = $1
+    WHERE u.userid = $1
     RETURNING *`;
 
   pool.query(query, values)

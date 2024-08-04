@@ -37,7 +37,6 @@ export default function Login() {
                             throw new Error("There was a problem trying to log in.");
                         }
                         const data = await response.json();
-                        console.log(data);
                         setLoggedIn(data.success);
                         sessionStorage.setItem('userid', data.userId);
 
