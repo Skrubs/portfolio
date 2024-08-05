@@ -5,6 +5,8 @@ import {peopleList} from "../people.js";
 import {PencilIcon} from "@heroicons/react/16/solid/index.js";
 import BlogDataForm from "../components-sub/BlogDataForm.jsx";
 import Blogs from "../components-sub/Blogs.jsx";
+import ProjectList from "../components-sub/ProjectList.jsx";
+import Qualifications from "../components-sub/Qualifications.jsx";
 
 
 
@@ -20,6 +22,10 @@ export default function ProfilePage(){
     const [cert2, setCert2] = useState('');
     const [myPage, setMyPage] = useState(false);
     const [isBlogEdit, setIsEditBlog] = useState(false);
+
+
+
+
 
 
     const isMyProfile = ()=>{
@@ -133,7 +139,8 @@ export default function ProfilePage(){
             </div>
                 <section data-id={'blog section'} className={'grid grid-cols-3 gap-2 h-full'}>
                     <div  className={'border rounded-xl flex flex-col items-left align-top m-4 p-4 min-w-[33%] bg-[linear-gradient(to_bottom,_darkslategray,_white)]'}>
-                        <h1 className={'text-3xl text-amber-200'}>stuff</h1>
+                        <h1 className={'text-3xl text-amber-200'}>Qualifications</h1>
+                        <Qualifications/>
                     </div>
                     <div className={'border rounded-xl flex flex-col items-center m-4 p-4 min-h-16 min-w-[33%] bg-[linear-gradient(to_bottom,_darkslategray,_white)] '}>
                         <div className={'flex flex-row p-1 m-1 mb-16 gap-4'}>
@@ -150,7 +157,10 @@ export default function ProfilePage(){
                     </div>
                     <div
                         className={'border rounded-xl flex flex-col items-center align-middle m-4 p-4 min-w-[33%] bg-[linear-gradient(to_bottom,_darkslategray,_white)] '}>
-                        <h1 className={'text-3xl text-amber-200'}>Things</h1>
+                        <h1 className={'text-3xl text-amber-200'}>GitHub Projects</h1>
+                        <div className={'flex flex-col'}>
+                            <ProjectList/>
+                        </div>
                     </div>
                 </section>
         </div>

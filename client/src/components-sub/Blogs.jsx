@@ -42,8 +42,8 @@ export default function Blogs() {
     }
 
     return (
-        <div>
-            <ul className={'space-y-8'}>
+        <div className={'border overflow-hidden'}>
+            <ul className={'space-y-8 max-h-[800px] overflow-auto'}>
                 {blogList.map(({ messageid, message }) => (
                     <li key={messageid}>
                         <BlogCard messageid={messageid} message={message} />

@@ -6,6 +6,9 @@ import {useEffect, useState} from "react";
 import {peopleList} from '../people.js';
 import websiteLogo from '../assets/websitelogo.jpg';
 import { loadUsers } from "../LoadUsers.jsx";
+import {BriefcaseIcon} from "@heroicons/react/16/solid/index.js";
+import UserSettingsModal from "../components-sub/UserSettingsModal.jsx";
+import Button from "@mui/material/Button";
 
 export default function Home() {
 
@@ -14,7 +17,7 @@ export default function Home() {
     const [userLoggedIn, setUserLoggedIn] = useState(false);
     const [profileAddress, setProfileAddress] = useState('');
     const [id, setId] = useState('');
-
+    const [isUserSettings, setIsUserSettings] = useState(false);
     const idCheck = () =>{
         if(sessionStorage.getItem('userid') !== undefined || ""){
             setId(sessionStorage.getItem('userid'));
@@ -60,9 +63,17 @@ export default function Home() {
         }
     }, []);
 
+    const handleUserSettings = ()=>{
+        setIsUserSettings(!isUserSettings);
+    }
+    const handleClose = ()=>{
+        setIsUserSettings(false);
+    }
+
 
     return(
         <div className={'flex flex-col m-32'}>
+            {isUserSettings && <UserSettingsModal onClose={handleClose}/>}
 
             <header className={'flex flex-1 h-32 w-full'}>
                 <div className="relative flex flex-row w-full h-auto p-2 m-1 rounded-xl align-top">
@@ -74,8 +85,10 @@ export default function Home() {
                             {(user !== "") && <h6 className={'mt-1'}>Logged In: {user}</h6>}
                         </div>
                     </div>
-                    {userLoggedIn && <div className={'flex flex-row w-24 h-8 m-0 ml-12 p-1 rounded-md drop-shadow-lg hover:drop-shadow-sm'}>
-                        <Link className={'bg-green-800 hover:b-green-400 rounded-md p-1 m-1 w-36 h-8'} to={profileAddress}>My Profile</Link>
+                    {userLoggedIn && <div className={'flex flex-row space-x-3 w-64 h-8 m-0 ml-12 p-1 rounded-md drop-shadow-lg hover:drop-shadow-sm'}>
+                        <Link className={'bg-green-800 hover:b-green-400 rounded-md p-1 m-1 w-24 h-8'} to={profileAddress}>My Profile</Link>
+                       <Button className={'text-black'} onClick={handleUserSettings}><BriefcaseIcon/></Button>
+
                     </div>}
                 </div>
                 <div className={"flex flex-col items-center logodiv"} style={{ background: 'var(--Primary-Background)'}}>

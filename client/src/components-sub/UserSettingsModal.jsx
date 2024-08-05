@@ -26,7 +26,7 @@ function getSessionStorageKey() {
     return sessionStorage.getItem('userid');
 }
 
-const UserSettingsModal = () => {
+const UserSettingsModal = ({onClose}) => {
     const [selectedSetting, setSelectedSetting] = useState('password');
     const [userInfo, setUserInfo] = useState({
         firstname: '',
@@ -195,7 +195,7 @@ const UserSettingsModal = () => {
                 return (
                     <Box>
                         <Typography variant="h6">Edit GitHub URL</Typography>
-                        <TextField name="githubUrl" label="GitHub URL" value={userInfo.githubUrl} onChange={handleInputChange} fullWidth margin="normal" />
+                        <TextField name="githubUrl" label="GitHub URL" onChange={handleInputChange} fullWidth margin="normal" />
                     </Box>
                 );
             case 'twitterUrl':
@@ -218,75 +218,69 @@ const UserSettingsModal = () => {
         }
     };
 
+    const handleOverlayClick = (event) =>{
+        if(event.target === event.currentTarget){
+            onClose();
+        }
+    }
+
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'stretch',
-                bgcolor: "--Primary-Background",
-                boxShadow: 24,
-                p: { xs: 2, md: 4 },
-                outline: 'none',
-                borderRadius: 1,
-                width: { xs: '40%', md: '50%' },
-                marginLeft: { xs: '35%', md: '30%' },
-                marginTop: '50%',
-                mt: 10,
-                overflow: 'auto',
-                typography: { xs: 'body2', md: 'body1' },
-            }}
-        >
-            <Box
-                sx={{
-                    width: { xs: '100%', md: '30%' },
-                    bgcolor: 'grey.200',
-                    borderRadius: 1,
-                    mr: { md: 2 },
-                    mb: { xs: 2, md: 0 },
-                    overflow: 'auto',
-                }}
-            >
-                <List>
-                    {settings.map((setting) => (
-                        <ListItem button key={setting.value} onClick={() => setSelectedSetting(setting.value)}>
-                            <ListItemText primary={setting.text} />
-                        </ListItem>
-                    ))}
-                </List>
-            </Box>
-            <Box
-                sx={{
-                    width: { xs: '100%', md: '70%' },
-                    bgcolor: 'white',
-                    borderRadius: 1,
-                    p: 2,
-                    boxShadow: 1,
-                    overflow: 'auto',
-                }}
-            >
-                {renderContent()}
+        <>
+            <Box className="fixed inset-0 bg-black/50 z-40" onClick={handleOverlayClick}></Box>
 
-
-                <Box>
-                    <Typography variant="h6">Delete Profile</Typography>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        startIcon={<DeleteIcon />}
-                        onClick={handleDeleteProfile}
-                    >
-                        Delete Profile
-                    </Button>
+            <Box className="fixed top-8 left-1/2 transform -translate-x-1/2 bg-white shadow-lg p-4 rounded-md w-11/12 md:w-[1200px] z-50">
+                <Box
+                    sx={{
+                        width: { xs: '100%', md: '30%' },
+                        bgcolor: 'grey.200',
+                        borderRadius: 1,
+                        mr: { md: 2 },
+                        mb: { xs: 2, md: 0 },
+                        overflow: 'auto',
+                    }}
+                >
+                    <List>
+                        {settings.map((setting) => (
+                            <ListItem button key={setting.value} onClick={() => setSelectedSetting(setting.value)}>
+                                <ListItemText primary={setting.text} />
+                            </ListItem>
+                        ))}
+                    </List>
                 </Box>
+                <Box
+                    sx={{
+                        width: { xs: '100%', md: '70%' },
+                        bgcolor: 'white',
+                        borderRadius: 1,
+                        p: 2,
+                        boxShadow: 1,
+                        overflow: 'auto',
+                    }}
+                >
+                    {renderContent()}
 
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button variant="contained" onClick={handleSave}>
-                        Save
-                    </Button>
+
+                    <Box>
+                        <Typography variant="h6">Delete Profile</Typography>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            startIcon={<DeleteIcon />}
+                            onClick={handleDeleteProfile}
+                        >
+                            Delete Profile
+                        </Button>
+                    </Box>
+
+                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                        <Button variant="contained" onClick={handleSave}>
+                            Save
+                        </Button>
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+
+        </>
     );
 };
 
