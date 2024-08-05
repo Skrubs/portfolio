@@ -95,6 +95,8 @@ router.put("/users/:id", async (req, res) => {
         propic, bio, workhistory, education, linkedin, github, twitterx, certifications
     } = req.body;
 
+    console.log(github);
+
     if (isNaN(id)) {
         return res.status(500).json({ error: `Invalid user ID ${id}` });
     }
